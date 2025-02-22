@@ -1,3 +1,3 @@
 # Planet Boost Site project
 
-first commit.
+First commit.
