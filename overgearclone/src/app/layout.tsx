@@ -1,6 +1,7 @@
 // src/app/layout.tsx
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
+import ChatBot from "../components/Chatbot";
 import React from "react";
 import { CurrencyProvider } from "../contexts/CurrencyContext";
 import { CartProvider } from "../contexts/CartContext";
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CurrencyProvider>
           <CartProvider>
             <Navbar />
+            <ChatBot />
             <main>{children}</main>
           </CartProvider>
         </CurrencyProvider>

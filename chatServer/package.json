@@ -1,0 +1,17 @@
+{
+  "name": "chatServer",
+  "version": "1.0.0",
+  "description": "Chat server for real-time messaging",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.7",
+    "socket.io": "^4.8.1"
+  }
+}
