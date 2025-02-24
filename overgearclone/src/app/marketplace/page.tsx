@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getProducts, getProductsByCategory } from "../../services/productService";
 import { convertPrice } from "../../utils/currency";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
+import { getProductImagePath } from "../../utils/imagePath";
 
 const Marketplace: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
@@ -56,13 +57,18 @@ const Marketplace: React.FC = () => {
                 marginBottom: "10px",
                 cursor: "pointer",
               }}
-              onClick={() => router.push(`/marketplace/${product._id}`)}
+              onClick={() => router.push(`/marketplace/${product.id || product._id}`)}
             >
               <h3>{product.name}</h3>
               <p>{product.category}</p>
               <p>
                 ${convertPrice(product.price, currency).toFixed(2)} {currency}
               </p>
+              <img
+                src={getProductImagePath(product.image)}
+                alt={product.name}
+                style={{ width: "200px", height: "auto" }}
+              />
             </li>
           ))}
         </ul>

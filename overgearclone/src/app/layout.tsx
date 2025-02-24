@@ -1,8 +1,9 @@
 // src/app/layout.tsx
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
-import { CurrencyProvider } from "../contexts/CurrencyContext";
 import React from "react";
+import { CurrencyProvider } from "../contexts/CurrencyContext";
+import { CartProvider } from "../contexts/CartContext";
 
 export const metadata = {
   title: "Overgear Clone",
@@ -14,8 +15,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <CurrencyProvider>
-          <Navbar />
-          <main>{children}</main>
+          <CartProvider>
+            <Navbar />
+            <main>{children}</main>
+          </CartProvider>
         </CurrencyProvider>
       </body>
     </html>

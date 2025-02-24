@@ -1,10 +1,10 @@
 "use client";
-
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { login, register } from "../services/authService";
 import { CurrencyContext } from "../contexts/CurrencyContext";
+import { CartContext } from "../contexts/CartContext";
 
 const Navbar: React.FC = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -18,8 +18,9 @@ const Navbar: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
   const { currency, setCurrency } = useContext(CurrencyContext);
+  const { cart } = useContext(CartContext);
 
-  // On mount, check localStorage for authentication state
+  // On mount, check for auth state in localStorage
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("user");
@@ -32,7 +33,6 @@ const Navbar: React.FC = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchInput(query);
-    // For example, update the marketplace URL with the search query:
     router.push(`/marketplace?search=${encodeURIComponent(query)}`);
   };
 
@@ -80,13 +80,12 @@ const Navbar: React.FC = () => {
     localStorage.removeItem("user");
     setIsAuthenticated(false);
     setUser(null);
-    router.refresh();
+    router.push("/"); // Redirect to home page
   };
 
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const curr = e.target.value;
     setCurrency(curr);
-    // CurrencyContext will update localStorage and trigger re-renders in consumer components
   };
 
   return (
@@ -100,7 +99,8 @@ const Navbar: React.FC = () => {
         alignItems: "center",
         position: "relative",
       }}
-    >
+    > 
+    <Link href="/">Casa do Macacao</Link>
       <div style={{ display: "flex", alignItems: "center" }}>
         <input
           type="text"
@@ -116,14 +116,36 @@ const Navbar: React.FC = () => {
         <option value="EUR">EUR</option>
         <option value="BRL">BRL</option>
       </select>
-      <Link href="/marketplace">Marketplace</Link>
+      
+      {/* Cart icon with count */}
+      <Link href="/cart" style={{ position: "relative" }}>
+        🛒
+        {cart.length > 0 && (
+          <span
+            style={{
+              position: "absolute",
+              top: "-5px",
+              right: "-10px",
+              background: "red",
+              color: "#fff",
+              borderRadius: "50%",
+              padding: "2px 6px",
+              fontSize: "12px",
+            }}
+          >
+            {cart.length}
+          </span>
+        )}
+      </Link>
       {isAuthenticated ? (
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <span>Welcome, {user?.username}</span>
+        <>
+          <Link href="/profile" style={{ color: "#fff" }}>
+            Profile
+          </Link>
           <button onClick={handleLogout} style={{ background: "#555", color: "#fff", padding: "5px 10px", border: "none" }}>
             Logout
           </button>
-        </div>
+        </>
       ) : (
         <button onClick={toggleAuthModal} style={{ background: "#555", color: "#fff", padding: "5px 10px", border: "none" }}>
           Login
